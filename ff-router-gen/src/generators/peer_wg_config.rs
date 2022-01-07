@@ -2,7 +2,7 @@
 
 use std::net::Ipv6Addr;
 
-use crate::model::peer::Peer;
+use crate::model::{peer::Peer, router::Router};
 
 use super::ConfigGenerator;
 
@@ -10,16 +10,16 @@ use super::ConfigGenerator;
 pub struct PeerWireguardConfigGenerator {
     peer: Peer,
     wg_privkey: String,
-    address: Ipv6Addr,
+    router:Router
 }
 
 impl PeerWireguardConfigGenerator {
     /// Construct a new PeerWireguardConfigGenerator
-    pub fn new(peer: Peer, wg_privkey: &str, address: &Ipv6Addr) -> Self {
+    pub fn new(peer: Peer, wg_privkey: &str, router: &Router) -> Self {
         Self {
             peer,
             wg_privkey: wg_privkey.to_string(),
-            address: address.clone(),
+            router: router.clone()
         }
     }
 }
@@ -36,17 +36,18 @@ impl ConfigGenerator for PeerWireguardConfigGenerator {
             indoc::indoc! {"
                 [Interface]
                 PrivateKey = {}
-                PostUp = ip addr add dev %i {}/128 peer {}/128
+                PostUp = ip addr add {}/128 peer {}/128 dev %i
                 Table = off
                 {}
 
                 [Peer]
                 PublicKey = {}
                 AllowedIPs = 172.16.0.0/12, 10.0.0.0/8, fd00::/8, fe80::/10
+                PersistentKeepalive = 25
                 {}
             "},
             self.wg_privkey,
-            self.address,
+            self.router.peering_link_local_address,
             self.peer.link_local,
             match &self.peer.listen_port {
                 Some(port) => format!("ListenPort = {}", port),

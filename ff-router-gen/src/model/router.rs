@@ -7,6 +7,8 @@ pub struct Router {
     pub asn: u32,
     /// The router address used for peering
     pub peering_address: Ipv6Addr,
+    /// The link-local peering address
+    pub peering_link_local_address: String,
     /// The public IPv4 address of the router as provided by gateway
     pub routed_ipv4: Ipv4Addr,
     /// The public IPv6 address of the router as provided by gateway

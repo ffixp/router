@@ -29,7 +29,7 @@ impl ConfigGenerator for PeerBirdConfigGenerator {
         format!(
             indoc::indoc! {"
                 protocol bgp as{} from peers {{
-                    neighbor {} % '{}' as {};
+                    neighbor {}%{} as {};
                 }}
             "},
             self.peer.asn,

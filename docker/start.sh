@@ -8,3 +8,7 @@ echo "Starting router!"
 echo "Bringing up all Wireguard interfaces"
 /scripts/wg-quick-all.sh up
 
+# Start the bird daemon
+echo "Starting bird daemon"
+/usr/sbin/bird -c /etc/bird/bird.conf -d
+

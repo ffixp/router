@@ -54,7 +54,7 @@ pub fn do_config_generation(matches: &ArgMatches) {
             let generator = PeerWireguardConfigGenerator::new(
                 peer.clone(),
                 &wg_private_key,
-                &router_config.peering_address,
+                &router_config,
             );
             let filename = generator.filename();
             let contents = generator.generate();

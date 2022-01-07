@@ -28,8 +28,7 @@ impl ConfigGenerator for GlobalBirdConfigGenerator {
     fn generate(&self) -> String {
         format!(
             indoc::indoc! {"
-            # Listening settings
-            listen bgp address :: port 179;            
+            # Listening settings           
             router id {};
 
             # Define some vars for use by sub-configs
@@ -37,16 +36,16 @@ impl ConfigGenerator for GlobalBirdConfigGenerator {
             define SELF_IPV6_ADDR = {};
 
             # Pull in the router config
-            include '/etc/bird/router.conf';
+            include \"/etc/bird/router.conf\";
 
             # Pull in the peer template
-            include '/etc/bird/peer_template.conf';
+            include \"/etc/bird/peer_template.conf\";
 
             # Pull in the peer configs
-            include '/etc/bird/peers/*';            
+            include \"/etc/bird/peers/*\";
             
             "},
-            self.router.routed_ipv4, self.router.asn, self.router.peering_address
+            self.router.routed_ipv4, self.router.asn, self.router.peering_link_local_address
         )
     }
 }
