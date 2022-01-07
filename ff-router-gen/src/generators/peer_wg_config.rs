@@ -34,16 +34,16 @@ impl ConfigGenerator for PeerWireguardConfigGenerator {
     fn generate(&self) -> String {
         format!(
             indoc::indoc! {"
-[Interface]
-PrivateKey = {}
-PostUp = ip addr add dev %i {}/128 peer {}/128
-Table = off
-{}
+                [Interface]
+                PrivateKey = {}
+                PostUp = ip addr add dev %i {}/128 peer {}/128
+                Table = off
+                {}
 
-[Peer]
-PublicKey = {}
-AllowedIPs = 172.16.0.0/12, 10.0.0.0/8, fd00::/8, fe80::/10
-{}
+                [Peer]
+                PublicKey = {}
+                AllowedIPs = 172.16.0.0/12, 10.0.0.0/8, fd00::/8, fe80::/10
+                {}
             "},
             self.wg_privkey,
             self.address,

@@ -1,4 +1,5 @@
 pub mod peer_wg_config;
+pub mod gateway_wg_config;
 
 /// Generic trait for a configuration generator
 pub trait ConfigGenerator {

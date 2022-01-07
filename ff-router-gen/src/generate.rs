@@ -3,7 +3,7 @@
 use clap::ArgMatches;
 
 use crate::{
-    generators::{peer_wg_config::PeerWireguardConfigGenerator, ConfigGenerator},
+    generators::{peer_wg_config::PeerWireguardConfigGenerator, ConfigGenerator, gateway_wg_config::PublicGatewayWireguardConfigGenerator},
     model::{peer::Peer, router::Router},
 };
 
@@ -57,5 +57,19 @@ pub fn do_config_generation(matches: &ArgMatches) {
             contents,
         )
         .unwrap();
+    }
+
+    // Handle generating the gateway wireguard config
+    {
+        let gateway_generator =
+            PublicGatewayWireguardConfigGenerator::new(router_config, &wg_private_key);
+        let filename = gateway_generator.filename();
+        let contents = gateway_generator.generate();
+
+        // Write the config to disk
+        std::fs::write(
+            format!("./generated/wireguard/interfaces/{}", filename),
+            contents,
+        ).unwrap();
     }
 }
