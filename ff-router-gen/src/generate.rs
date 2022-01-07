@@ -5,7 +5,8 @@ use clap::ArgMatches;
 use crate::{
     generators::{
         gateway_wg_config::PublicGatewayWireguardConfigGenerator,
-        peer_wg_config::PeerWireguardConfigGenerator, ConfigGenerator, peer_bird_config::PeerBirdConfigGenerator,
+        peer_bird_config::PeerBirdConfigGenerator, peer_wg_config::PeerWireguardConfigGenerator,
+        ConfigGenerator,
     },
     model::{peer::Peer, router::Router},
 };
@@ -17,6 +18,7 @@ fn mkdir(dir: &str) {
     }
 }
 
+/// Performs the actual generation step
 pub fn do_config_generation(matches: &ArgMatches) {
     // Load the configs
     let peers: Vec<Peer> = serde_json::from_str(
@@ -68,20 +70,12 @@ pub fn do_config_generation(matches: &ArgMatches) {
         // Bird
         {
             // Generate the config
-            let generator = PeerBirdConfigGenerator::new(
-                peer,
-                &wg_private_key,
-                &router_config.peering_address,
-            );
+            let generator = PeerBirdConfigGenerator::new(peer);
             let filename = generator.filename();
             let contents = generator.generate();
 
             // Write the config to disk
-            std::fs::write(
-                format!("./generated/bird/peers/{}", filename),
-                contents,
-            )
-            .unwrap();
+            std::fs::write(format!("./generated/bird/peers/{}", filename), contents).unwrap();
         }
     }
 
