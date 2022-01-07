@@ -16,5 +16,14 @@
         "asn": 4242421817,
         "pubkey": "jxCsSXtUSVjaP+eMWOyRsHg3JShQfBFEtyssMKWQaS8=",
         "wg_endpoint": "tw.kskb.eu.org:20966"
+    },
+    {
+        "name": "chrismoos",
+        "homepage": "https://www.chrismoos.com/dn42-peering/",
+        "location": "Chicago, IL, USA",
+        "link_local": "fe80::1588",
+        "asn": 4242421588,
+        "pubkey": "0kb8ffMcbx8oXZ3Ii5khOuCzmRqM2Cy0IslmrWtRGSk=",
+        "wg_endpoint": "us-chi01.dn42.tech9.io:53286"
     }
 ]
