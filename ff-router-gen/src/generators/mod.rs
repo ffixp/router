@@ -1,5 +1,6 @@
 pub mod peer_wg_config;
 pub mod gateway_wg_config;
+pub mod peer_bird_config;
 
 /// Generic trait for a configuration generator
 pub trait ConfigGenerator {

@@ -3,7 +3,10 @@
 use clap::ArgMatches;
 
 use crate::{
-    generators::{peer_wg_config::PeerWireguardConfigGenerator, ConfigGenerator, gateway_wg_config::PublicGatewayWireguardConfigGenerator},
+    generators::{
+        gateway_wg_config::PublicGatewayWireguardConfigGenerator,
+        peer_wg_config::PeerWireguardConfigGenerator, ConfigGenerator, peer_bird_config::PeerBirdConfigGenerator,
+    },
     model::{peer::Peer, router::Router},
 };
 
@@ -39,24 +42,47 @@ pub fn do_config_generation(matches: &ArgMatches) {
     // Ensure the output directory exists
     mkdir("./generated");
     mkdir("./generated/wireguard/interfaces");
+    mkdir("./generated/bird/peers");
 
-    // Handle generating all peer wireguard configs
+    // Handle generating all peer wireguard and birdconfigs
     for peer in peers {
-        // Generate the config
-        let generator = PeerWireguardConfigGenerator::new(
-            peer,
-            &wg_private_key,
-            &router_config.peering_address,
-        );
-        let filename = generator.filename();
-        let contents = generator.generate();
+        // Wireguard
+        {
+            // Generate the config
+            let generator = PeerWireguardConfigGenerator::new(
+                peer.clone(),
+                &wg_private_key,
+                &router_config.peering_address,
+            );
+            let filename = generator.filename();
+            let contents = generator.generate();
 
-        // Write the config to disk
-        std::fs::write(
-            format!("./generated/wireguard/interfaces/{}", filename),
-            contents,
-        )
-        .unwrap();
+            // Write the config to disk
+            std::fs::write(
+                format!("./generated/wireguard/interfaces/{}", filename),
+                contents,
+            )
+            .unwrap();
+        }
+
+        // Bird
+        {
+            // Generate the config
+            let generator = PeerBirdConfigGenerator::new(
+                peer,
+                &wg_private_key,
+                &router_config.peering_address,
+            );
+            let filename = generator.filename();
+            let contents = generator.generate();
+
+            // Write the config to disk
+            std::fs::write(
+                format!("./generated/bird/peers/{}", filename),
+                contents,
+            )
+            .unwrap();
+        }
     }
 
     // Handle generating the gateway wireguard config
@@ -70,6 +96,7 @@ pub fn do_config_generation(matches: &ArgMatches) {
         std::fs::write(
             format!("./generated/wireguard/interfaces/{}", filename),
             contents,
-        ).unwrap();
+        )
+        .unwrap();
     }
 }
