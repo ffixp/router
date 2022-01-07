@@ -1,4 +1,4 @@
-//! This file handles generation of the wireguard config files for each peer
+//! This file handles generation of the wireguard config file for the gateway
 
 use crate::model::router::Router;
 

@@ -1,4 +1,4 @@
-//! This file handles generation of the wireguard config files for each peer
+//! This file handles generation of the bird config files for each peer
 
 use std::net::Ipv6Addr;
 

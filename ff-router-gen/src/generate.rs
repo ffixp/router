@@ -6,7 +6,7 @@ use crate::{
     generators::{
         gateway_wg_config::PublicGatewayWireguardConfigGenerator,
         peer_bird_config::PeerBirdConfigGenerator, peer_wg_config::PeerWireguardConfigGenerator,
-        ConfigGenerator,
+        ConfigGenerator, global_bird_config::GlobalBirdConfigGenerator,
     },
     model::{peer::Peer, router::Router},
 };
@@ -82,7 +82,7 @@ pub fn do_config_generation(matches: &ArgMatches) {
     // Handle generating the gateway wireguard config
     {
         let gateway_generator =
-            PublicGatewayWireguardConfigGenerator::new(router_config, &wg_private_key);
+            PublicGatewayWireguardConfigGenerator::new(router_config.clone(), &wg_private_key);
         let filename = gateway_generator.filename();
         let contents = gateway_generator.generate();
 
@@ -93,4 +93,18 @@ pub fn do_config_generation(matches: &ArgMatches) {
         )
         .unwrap();
     }
+
+    // Handle generating the router bird config
+    {
+        let generator = GlobalBirdConfigGenerator::new(router_config);
+        let filename = generator.filename();
+        let contents = generator.generate();
+
+        // Write the config to disk
+        std::fs::write(format!("./generated/bird/{}", filename), contents).unwrap();
+    }
+
+    // Copy the static bird files
+    std::fs::copy("./bird/peer_template.conf", "./generated/bird/peer_template.conf").unwrap();
+    std::fs::copy("./bird/router.conf", "./generated/bird/router.conf").unwrap();
 }
