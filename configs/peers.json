@@ -3,36 +3,61 @@
         "name": "ZZANET",
         "homepage": "https://ingress.network.va3zza.com",
         "location": "Toronto, Ontario, Canada",
-        "link_local": "fe80::1047",
+        "ipv6": "fd70:4904:a771::2",
         "asn": 4242422811,
         "pubkey": "duRN0kofEHDPetTCCcwpgyjUJaUi5pEbxAn8x+/xZXs=",
-        "wg_endpoint": "ingress.network.va3zza.com:51821"
+        "endpoint": "ingress.network.va3zza.com:51821"
     },
     {
         "name": "Kioubit_US2",
         "homepage": "https://dn42.g-load.eu",
         "location": "New York City, NY, USA",
-        "link_local": "fe80::ade0",
+        "ipv6": "fe80::ade0",
+        "is_link_local": true,
         "asn": 4242423914,
         "pubkey": "6Cylr9h1xFduAO+5nyXhFI1XJ0+Sw9jCpCDvcqErF1s=",
-        "wg_endpoint": "us2.g-load.eu:20966"
+        "endpoint": "us2.g-load.eu:20966"
     },
     {
         "name": "KSKB_NETWORK_TW",
         "homepage": "https://kskb42.pages.dev/tw/",
         "location": "Taiwan",
-        "link_local": "fe80::42:1817:1",
+        "ipv6": "fe80::42:1817:1",
+        "is_link_local": true,
         "asn": 4242421817,
         "pubkey": "jxCsSXtUSVjaP+eMWOyRsHg3JShQfBFEtyssMKWQaS8=",
-        "wg_endpoint": "tw.kskb.eu.org:20966"
+        "endpoint": "tw.kskb.eu.org:20966"
     },
     {
         "name": "chrismoos",
         "homepage": "https://www.chrismoos.com/dn42-peering/",
         "location": "Chicago, IL, USA",
-        "link_local": "fe80::1588",
+        "ipv6": "fe80::1588",
+        "is_link_local": true,
+        "listen_port":58000,
         "asn": 4242421588,
         "pubkey": "0kb8ffMcbx8oXZ3Ii5khOuCzmRqM2Cy0IslmrWtRGSk=",
-        "wg_endpoint": "us-chi01.dn42.tech9.io:53286"
+        "endpoint": "us-chi01.dn42.tech9.io:53286"
+    },
+    {
+        "name": "NICHOLASCW",
+        "homepage": "https://nicholas.wang/dn42/",
+        "location": "Seattle, WA, USA",
+        "ipv6": "fe80::1288",
+        "is_link_local": true,
+        "listen_port":58002,
+        "asn": 4242421288,
+        "pubkey": "AMmUVNOn6ZtL0+vn1tfO4c7M1Fby19lSVZpJJhML6VI=",
+        "endpoint": "sea1.sc00.org:20966"
+    },
+    {
+        "name": "whojk_RUW",
+        "homepage": "https://dn42.whojk.com/ruw/",
+        "location": "Moscow, Russia",
+        "ipv6": "fe80::104:50:2030:a",
+        "is_link_local": true,
+        "asn": 4242422717,
+        "pubkey": "iUH4aZ7/YohpCa7kYkGDSFYaMWqTXQbKFNmrZ4SjnX8=",
+        "endpoint": "ruw.vm.whojk.com:23003"
     }
 ]

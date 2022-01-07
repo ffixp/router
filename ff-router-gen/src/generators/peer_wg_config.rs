@@ -1,30 +1,28 @@
 //! This file handles generation of the wireguard config files for each peer
 
-use std::net::Ipv6Addr;
-
 use crate::model::{peer::Peer, router::Router};
 
 use super::ConfigGenerator;
 
 /// Generator for peer wg configs
-pub struct PeerWireguardConfigGenerator {
+pub struct LinkLocalPeerWireguardConfigGenerator {
     peer: Peer,
     wg_privkey: String,
-    router:Router
+    router: Router,
 }
 
-impl PeerWireguardConfigGenerator {
-    /// Construct a new PeerWireguardConfigGenerator
+impl LinkLocalPeerWireguardConfigGenerator {
+    /// Construct a new LinkLocalPeerWireguardConfigGenerator
     pub fn new(peer: Peer, wg_privkey: &str, router: &Router) -> Self {
         Self {
             peer,
             wg_privkey: wg_privkey.to_string(),
-            router: router.clone()
+            router: router.clone(),
         }
     }
 }
 
-impl ConfigGenerator for PeerWireguardConfigGenerator {
+impl ConfigGenerator for LinkLocalPeerWireguardConfigGenerator {
     /// The config file name
     fn filename(&self) -> String {
         format!("peer{}.conf", self.peer.asn)
@@ -48,13 +46,13 @@ impl ConfigGenerator for PeerWireguardConfigGenerator {
             "},
             self.wg_privkey,
             self.router.peering_link_local_address,
-            self.peer.link_local,
+            self.peer.ipv6,
             match &self.peer.listen_port {
                 Some(port) => format!("ListenPort = {}", port),
                 None => String::new(),
             },
             self.peer.pubkey,
-            match &self.peer.wg_endpoint {
+            match &self.peer.endpoint {
                 Some(wg_endpoint) => format!("Endpoint = {}", wg_endpoint),
                 None => String::new(),
             }

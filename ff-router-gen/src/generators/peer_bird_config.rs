@@ -13,8 +13,8 @@ pub struct PeerBirdConfigGenerator {
 
 impl PeerBirdConfigGenerator {
     /// Construct a new PeerBirdConfigGenerator
-    pub fn new(peer: Peer) -> Self {
-        Self { peer }
+    pub fn new(peer: &Peer) -> Self {
+        Self { peer: peer.clone() }
     }
 }
 
@@ -29,12 +29,16 @@ impl ConfigGenerator for PeerBirdConfigGenerator {
         format!(
             indoc::indoc! {"
                 protocol bgp as{} from peers {{
-                    neighbor {}%{} as {};
+                    source address {};
+                    neighbor {} as {};
                 }}
             "},
             self.peer.asn,
-            self.peer.link_local,
-            format!("peer{}", self.peer.asn),
+            match self.peer.is_link_local.unwrap_or(false) {
+                true => "SELF_IPV6_ADDR_LINK_LOCAL",
+                false => "SELF_IPV6_ADDR",
+            },
+            self.peer.address_formatted(),
             self.peer.asn
         )
     }

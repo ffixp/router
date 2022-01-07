@@ -33,6 +33,7 @@ impl ConfigGenerator for GlobalBirdConfigGenerator {
 
             # Define some vars for use by sub-configs
             define SELF_ASN = {};
+            define SELF_IPV6_ADDR_LINK_LOCAL = {};
             define SELF_IPV6_ADDR = {};
 
             # Pull in the router config
@@ -45,7 +46,10 @@ impl ConfigGenerator for GlobalBirdConfigGenerator {
             include \"/etc/bird/peers/*\";
             
             "},
-            self.router.routed_ipv4, self.router.asn, self.router.peering_link_local_address
+            self.router.routed_ipv4,
+            self.router.asn,
+            self.router.peering_link_local_address,
+            self.router.peering_address
         )
     }
 }

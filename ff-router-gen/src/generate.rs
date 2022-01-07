@@ -5,8 +5,8 @@ use clap::ArgMatches;
 use crate::{
     generators::{
         gateway_wg_config::PublicGatewayWireguardConfigGenerator,
-        peer_bird_config::PeerBirdConfigGenerator, peer_wg_config::PeerWireguardConfigGenerator,
-        ConfigGenerator, global_bird_config::GlobalBirdConfigGenerator,
+        global_bird_config::GlobalBirdConfigGenerator, peer_bird_config::PeerBirdConfigGenerator,
+        peer_wg_config::LinkLocalPeerWireguardConfigGenerator, ConfigGenerator, non_ll_peer_wg_config::NonLLPeerWireguardConfigGenerator,
     },
     model::{peer::Peer, router::Router},
 };
@@ -47,11 +47,12 @@ pub fn do_config_generation(matches: &ArgMatches) {
     mkdir("./generated/bird/peers");
 
     // Handle generating all peer wireguard and birdconfigs
-    for peer in peers {
-        // Wireguard
-        {
+    for peer in &peers {
+        // Link-local peers need their own individual interfaces
+        // We will do a second pass later to catch all non-link-local peers
+        if peer.is_link_local.unwrap_or(false) {
             // Generate the config
-            let generator = PeerWireguardConfigGenerator::new(
+            let generator = LinkLocalPeerWireguardConfigGenerator::new(
                 peer.clone(),
                 &wg_private_key,
                 &router_config,
@@ -77,6 +78,21 @@ pub fn do_config_generation(matches: &ArgMatches) {
             // Write the config to disk
             std::fs::write(format!("./generated/bird/peers/{}", filename), contents).unwrap();
         }
+    }
+
+    // Handle generating the mesh config for non-link-local peers
+    {
+        // Generate the config
+        let generator = NonLLPeerWireguardConfigGenerator::new(
+            peers.clone().drain_filter(|p| !p.is_link_local.unwrap_or(false)).collect(),
+            &wg_private_key,
+            &router_config,
+        );
+        let filename = generator.filename();
+        let contents = generator.generate();
+
+        // Write the config to disk
+        std::fs::write(format!("./generated/wireguard/interfaces/{}", filename), contents).unwrap();
     }
 
     // Handle generating the gateway wireguard config
@@ -105,6 +121,10 @@ pub fn do_config_generation(matches: &ArgMatches) {
     }
 
     // Copy the static bird files
-    std::fs::copy("./bird/peer_template.conf", "./generated/bird/peer_template.conf").unwrap();
+    std::fs::copy(
+        "./bird/peer_template.conf",
+        "./generated/bird/peer_template.conf",
+    )
+    .unwrap();
     std::fs::copy("./bird/router.conf", "./generated/bird/router.conf").unwrap();
 }
