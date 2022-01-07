@@ -10,6 +10,9 @@ services:
       - ./generated/wireguard/interfaces:/etc/wireguard
       - ./scripts:/scripts
       - '/lib/modules:/lib/modules:ro'
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_persist:/root/.local/share/caddy
+      - ./docker/crontab:/etc/crontab
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -17,3 +20,6 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
       - net.ipv6.conf.all.disable_ipv6=0
     privileged: true
+
+volumes:
+  caddy_persist:
