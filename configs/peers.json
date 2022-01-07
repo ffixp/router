@@ -1,5 +1,14 @@
 [
     {
+        "name": "ZZANET",
+        "homepage": "https://ingress.network.va3zza.com",
+        "location": "Toronto, Ontario, Canada",
+        "link_local": "fe80::1047",
+        "asn": 4242422811,
+        "pubkey": "duRN0kofEHDPetTCCcwpgyjUJaUi5pEbxAn8x+/xZXs=",
+        "wg_endpoint": "ingress.network.va3zza.com:51821"
+    },
+    {
         "name": "Kioubit_US2",
         "homepage": "https://dn42.g-load.eu",
         "location": "New York City, NY, USA",
