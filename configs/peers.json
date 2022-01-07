@@ -1,10 +1,20 @@
 [
     {
-        "name": "Kioubit_HK1",
+        "name": "Kioubit_US2",
         "homepage": "https://dn42.g-load.eu",
+        "location": "New York City, NY, USA",
         "link_local": "fe80::ade0",
         "asn": 4242423914,
-        "pubkey": "sLbzTRr2gfLFb24NPzDOpy8j09Y6zI+a7NkeVMdVSR8=",
-        "wg_endpoint": "hk1.g-load.eu:20966"
+        "pubkey": "6Cylr9h1xFduAO+5nyXhFI1XJ0+Sw9jCpCDvcqErF1s=",
+        "wg_endpoint": "us2.g-load.eu:20966"
+    },
+    {
+        "name": "KSKB_NETWORK_TW",
+        "homepage": "https://kskb42.pages.dev/tw/",
+        "location": "Taiwan",
+        "link_local": "fe80::42:1817:1",
+        "asn": 4242421817,
+        "pubkey": "jxCsSXtUSVjaP+eMWOyRsHg3JShQfBFEtyssMKWQaS8=",
+        "wg_endpoint": "tw.kskb.eu.org:20966"
     }
 ]
