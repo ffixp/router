@@ -9,5 +9,5 @@ connect.ffixp.net {
     }
 
     # We want to allow all FFIXP domains to access this endpoint
-    header Access-Control-Allow-Origin "*.ffixp.net"
+    header Access-Control-Allow-Origin "*"
 }
